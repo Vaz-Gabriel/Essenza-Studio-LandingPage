@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essenza Studio | Salão de Beleza e Estética</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-bg: #FDFBF7;
+            --color-text: #2D2A26;
+            --color-gold: #D4AF37;
+            --color-gold-hover: #b5952f;
+            --color-light-gray: #f5f5f5;
+            --color-dark-gray: #4a4a4a;
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header.navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 24px 0;
+            transition: var(--transition-smooth);
+            background-color: transparent;
+        }
+
+        header.navbar.scrolled {
+            background-color: rgba(253, 251, 247, 0.95);
+            padding: 16px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        header.navbar.scrolled .logo,
+        header.navbar.scrolled .nav-links a,
+        header.navbar.scrolled .mobile-menu-btn i {
+            color: var(--color-text);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--color-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-gold);
+        }
+
+        .btn-schedule {
+            border: 1px solid currentColor;
+            padding: 10px 24px;
+            border-radius: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-schedule:hover {
+            background-color: var(--color-gold);
+            border-color: var(--color-gold);
+            color: #fff !important;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--color-bg);
+            z-index: 1001;
+            padding: 80px 40px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu a {
+            font-size: 18px;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 24px;
+        }
+
+        .hero-subtitle {
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .hero h1 {
+            color: #fff;
+            font-size: clamp(40px, 6vw, 80px);
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            color: #e0e0e0;
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .btn-main {
+            display: inline-block;
+            background-color: var(--color-gold);
+            color: #fff;
+            padding: 16px 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--color-text);
+            transition: var(--transition-smooth);
+            z-index: -1;
+        }
+
+        .btn-main:hover::before {
+            width: 100%;
+        }
+
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            color: var(--color-text);
+            margin-bottom: 16px;
+        }
+
+        .section-title .line {
+            width: 60px;
+            height: 2px;
+            background-color: var(--color-gold);
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background-color: #fff;
+            padding: 50px 30px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition-smooth);
+            border-top-right-radius: 40px;
+            border-bottom-left-radius: 40px;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-color: transparent;
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 24px;
+            background-color: var(--color-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--color-gold);
+            transition: var(--transition-smooth);
+        }
+
+        .service-card:hover .service-icon {
+            background-color: var(--color-text);
+            color: #fff;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .service-card p {
+            color: var(--color-dark-gray);
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        .about-section {
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-gold);
+            border-top-right-radius: 200px;
+            z-index: 0;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            border-top-right-radius: 200px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .about-content h4 {
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .about-content h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.2;
+            margin-bottom: 32px;
+        }
+
+        .about-content p {
+            color: var(--color-dark-gray);
+            font-size: 16px;
+            margin-bottom: 24px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--color-light-gray);
+        }
+
+        .stat-item h5 {
+            font-size: 36px;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .stat-item p {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-dark-gray);
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 80px 0 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h3 {
+            font-size: 28px;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+
+        .footer-brand p {
+            color: #999;
+            font-weight: 300;
+            margin-bottom: 32px;
+            max-width: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            transition: var(--transition-smooth);
+        }
+
+        .social-links a:hover {
+            background-color: var(--color-gold);
+            border-color: var(--color-gold);
+            color: #fff;
+        }
+
+        .footer-col h4 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-col li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .footer-col li i {
+            color: var(--color-gold);
+            margin-top: 4px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        @media (max-width: 992px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-image img {
+                height: 400px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            header.navbar {
+                padding: 16px 0;
+            }
+            .hero-subtitle {
+                margin-top: 60px;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">ESSENZA</a>
+            
+            <nav class="nav-links">
+                <a href="#servicos">Serviços</a>
+                <a href="#sobre">Sobre Nós</a>
+                <a href="#contato">Contato</a>
+                <a href="#contato" class="btn-schedule">Agendar</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenuBtn">&times;</button>
+        <a href="#servicos" class="mobile-link">Serviços</a>
+        <a href="#sobre" class="mobile-link">Sobre Nós</a>
+        <a href="#contato" class="mobile-link">Contato</a>
+        <a href="#contato" style="color: var(--color-gold);">Agendar Horário</a>
+    </div>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <span class="hero-subtitle reveal">Bem-vindo ao</span>
+            <h1 class="reveal delay-100">Essenza Studio</h1>
+            <p class="reveal delay-200">Uma experiência de beleza única e sofisticada, desenhada para revelar a sua verdadeira essência.</p>
+            <a href="#contato" class="btn-main reveal delay-300">Agende seu Horário</a>
+        </div>
+    </section>
+
+    <section class="section-padding" id="servicos">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Nossos Serviços</h2>
+                <div class="line"></div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>Corte & Styling</h3>
+                    <p>Design de cortes personalizados que harmonizam perfeitamente com o seu rosto e estilo de vida diário.</p>
+                </div>
+                
+                <div class="service-card reveal delay-100">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>Coloração Premium</h3>
+                    <p>Técnicas avançadas de mechas e coloração utilizando apenas produtos de alta performance e durabilidade.</p>
+                </div>
+
+                <div class="service-card reveal delay-200">
+                    <div class="service-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Make Up Artist</h3>
+                    <p>Maquiagem sofisticada para eventos, casamentos ou simplesmente para realçar sua beleza natural.</p>
+                </div>
+
+                <div class="service-card reveal delay-300">
+                    <div class="service-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3>Spa & Estética</h3>
+                    <p>Tratamentos faciais, massagens relaxantes e cuidados holísticos para renovar seu corpo e mente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section section-padding" id="sobre">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image reveal">
+                    <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80" alt="Interior do Essenza Studio">
+                </div>
+                
+                <div class="about-content">
+                    <h4 class="reveal delay-100">A Filosofia Essenza</h4>
+                    <h2 class="reveal delay-100">Redefinindo o Conceito de Elegância</h2>
+                    <p class="reveal delay-200">Mais do que um salão de beleza convencional, o Essenza Studio é um refúgio urbano dedicado ao seu bem-estar integral. Nossa filosofia une técnicas vanguardistas com um atendimento intimista e totalmente personalizado.</p>
+                    <p class="reveal delay-200">Com uma equipe de especialistas renomados e o uso exclusivo de produtos de alta costura capilar e estética, garantimos que cada visita seja uma experiência sensorial transformadora.</p>
+                    
+                    <div class="stats reveal delay-300">
+                        <div class="stat-item">
+                            <h5>10+</h5>
+                            <p>Anos de Excelência</p>
+                        </div>
+                        <div class="stat-item">
+                            <h5>5k+</h5>
+                            <p>Clientes Satisfeitos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contato">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand reveal">
+                    <h3>ESSENZA</h3>
+                    <p>Elevando o padrão da beleza com arte, paixão e sofisticação em cada detalhe de nossos tratamentos.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col reveal delay-100">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                Av. Elegância, 1234 - Jardins<br>
+                                São Paulo, SP
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>(11) 99999-0000</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>contato@essenzastudio.com.br</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-col reveal delay-200">
+                    <h4>Horários</h4>
+                    <ul>
+                        <li style="justify-content: space-between;">
+                            <span>Terça - Sexta</span>
+                            <span style="color: var(--color-gold);">09:00 - 20:00</span>
+                        </li>
+                        <li style="justify-content: space-between;">
+                            <span>Sábado</span>
+                            <span style="color: var(--color-gold);">08:00 - 18:00</span>
+                        </li>
+                        <li style="justify-content: space-between;">
+                            <span>Dom - Seg</span>
+                            <span>Fechado</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Essenza Studio. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Navbar Scroll Effect
+            const navbar = document.getElementById('navbar');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                mobileOverlay.classList.toggle('active');
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            closeMenuBtn.addEventListener('click', toggleMenu);
+            mobileOverlay.addEventListener('click', toggleMenu);
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+
+            // Intersection Observer for Scroll Animations
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: Stop observing once revealed
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.15, // Trigger when 15% of element is visible
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            revealElements.forEach(element => {
+                revealObserver.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
